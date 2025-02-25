@@ -1,0 +1,99 @@
+name: Text2SQL
+description: "Build a Chat application to ask questions about your SQL database"
+author: "Maveric"
+date: "2025-25-02"
+specification_version: 1.0
+prototype_version: 1.0
+
+environment_variables:
+    # Added environment variables for Text-to-SQL models and database credentials
+    OPENAI_CHAT_MODEL:
+        default: "gpt-4o-mini"
+        description: "OpenAI Chat Model to use for text-to-SQL conversion."
+        required: true
+
+    HR_USER:
+        default: "HR"
+        description: "HR database username."
+        required: true
+    HR_PASSWORD:
+        default: "HR"
+        description: "HR database password."
+        required: true
+    HR_DSN:
+        default: "192.168.59.11/XEPDB1"
+        description: "HR database DSN."
+        required: true
+
+    BANK_USER:
+        default: "BANKING_DB1"
+        description: "Banking database username."
+        required: true
+    BANK_PASSWORD:
+        default: "sql123"
+        description: "Banking database password."
+        required: true
+    BANK_DSN:
+        default: "192.168.59.11/XEPDB1"
+        description: "Banking database DSN."
+        required: true
+
+    MUSIC_USER:
+        default: "MUSIC_DB1"
+        description: "Music database username."
+        required: true
+    MUSIC_PASSWORD:
+        default: "music_db1"
+        description: "Music database password."
+        required: true
+    MUSIC_DSN:
+        default: "192.168.59.11/XEPDB1"
+        description: "Music database DSN."
+        required: true
+
+    WATERFALL_USER:
+        default: "TEXT2SQLWATERFALL"
+        description: "Waterfall database username."
+        required: true
+    WATERFALL_PASSWORD:
+        default: "sql123"
+        description: "Waterfall database password."
+        required: true
+    WATERFALL_DSN:
+        default: "192.168.59.11/XEPDB1"
+        description: "Waterfall database DSN."
+        required: true
+
+    CHUNK_SIZE:
+        default: "1024"
+        description: "Chunk size for document processing."
+        required: false
+    CHUNK_OVERLAP:
+        default: "64"
+        description: "Chunk overlap for document processing."
+        required: false
+
+runtimes:
+  - editor: JupyterLab
+    kernel: Python 3.10
+    edition: Standard
+
+tasks:
+  ## SESSION related AMP snippet
+  - type: run_session
+    name: Install Dependencies
+    script: 0_session-install-dependencies/install_dependencies.py
+    short_summary: Install Requirements and Dependencies
+    kernel: python3
+    cpu: 2
+    memory: 4
+
+  ## APPLICATION related AMP snippet
+  - type: start_application
+    name: Text2SQL
+    short_summary: application for converting natural language queries into SQL commands.
+    long_summary: This Text-to-SQL application is a comprehensive framework that converts natural language queries into SQL commands using a FastAPI backend and a Streamlit frontend, supported by a suite of utility scripts for indexing, prompt setup, and database interaction. The project is organized with dedicated directories for images and utility functions, and includes key configuration files like `.env` for model settings (using "gpt-4o-mini" and an OpenAI API key), multiple database credentials for HR, BANK, MUSIC, and WATERFALL databases, as well as a `config.yml` for project settings. It is designed for easy setup through a Python virtual environment and dependency installation via `requirements.txt`, with the backend running on Uvicorn and the frontend on Streamlit, all while adhering to industry-standard code quality practices with tools such as isort, flake8, and black.
+    subdomain: chatbot
+    script: 3_app-run-python-script/app.py
+    environment_variables:
+      TASK_TYPE: START_APPLICATION
